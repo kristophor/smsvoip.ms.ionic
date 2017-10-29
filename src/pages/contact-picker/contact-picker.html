@@ -1,0 +1,31 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title text-center>Pick A Contact</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="onCancel()">
+        <ion-icon name="ios-close-outline"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content padding>
+  <form #f="ngForm" (ngSubmit)="onSubmit(f)">
+  <ion-grid>
+    <ion-row>
+      <ion-col col-sm-6 col-lg-10 col-xl-12>
+        <ion-item>
+        <ion-label color="primary">TO:</ion-label>
+        <ion-input placeholder="enter contact" type="number" name="contact" required ngModel ></ion-input>
+        </ion-item>
+      </ion-col>
+      <ion-col col-2>
+        <button [disabled]="!f.valid" ion-button icon-only outline small type="submit">
+          <ion-icon name="ios-chatboxes-outline"></ion-icon>
+        </button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  </form>
+</ion-content>

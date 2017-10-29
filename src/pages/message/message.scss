@@ -1,0 +1,46 @@
+page-message {
+
+}
+.chatbox{
+  border: solid 0px black;
+  border-radius: 15px;
+  padding: 10px;
+  margin: 2px 0px 2px 0px;
+  min-width: 40px;
+}
+
+.chatwrapper{
+  position:relative;
+  border: solid 0px black;
+  max-width: 70%;
+  margin: 1px 0px 1px 0px;
+}
+
+.chatContainer{
+  border: solid 0px blue;
+  display: block;
+  min-height: 50px;
+  clear:both;
+  margin: 2px 0px 2px 0px;
+  padding: 2px;
+}
+
+.leftTail {
+  position:absolute;
+  bottom:-15px;
+  left:6px;
+  width:0;height:0;
+  border-color: #E8E8E8 transparent transparent transparent;
+  border-width:10px;
+  border-style:solid;
+}
+
+.rightTail {
+  position:absolute;
+  bottom:-15px;
+  right:6px;
+  width:0;height:0;
+  border-color: #007ae8 transparent transparent transparent;
+  border-width:10px;
+  border-style:solid;
+}

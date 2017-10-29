@@ -1,0 +1,40 @@
+<ion-header>
+<ion-toolbar>
+  <ion-buttons left>
+    <button ion-button icon-only (click)="onOpenSettings()">
+      <ion-icon name="ios-settings-outline"></ion-icon>
+    </button>
+  </ion-buttons>
+  <ion-title text-center>Messages</ion-title>
+  <ion-buttons right>
+    <button ion-button icon-only (click)="onNewMessage()">
+      <ion-icon name="ios-add-circle-outline"></ion-icon>
+    </button>
+  </ion-buttons>
+
+</ion-toolbar>
+</ion-header>
+<ion-content padding>
+  <p *ngIf="loading">Loading....</p>
+  <ion-list *ngIf="allChats?.size!=0">
+    <ion-item-sliding *ngFor="let chat of allChats;let i of index" #item>
+      <ion-item (click)="onOpenChat(chat.title)">
+        <!--<ion-avatar item-start>-->
+          <!--<img [src]="chat.img">-->
+        <!--</ion-avatar>-->
+        <h2>{{chat.title}}</h2>
+        <p>{{chat.message}}</p>
+        <ion-note>
+          {{chat.date}}
+        </ion-note>
+      </ion-item>
+
+      <ion-item-options>
+        <button ion-button color="danger" (click)="delete(chat.title)">
+          <ion-icon name="trash"></ion-icon>
+          Delete
+        </button>
+      </ion-item-options>
+    </ion-item-sliding>
+  </ion-list>
+</ion-content>

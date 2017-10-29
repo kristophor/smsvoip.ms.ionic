@@ -1,0 +1,14 @@
+{
+  "name": "SMSVOIP",
+  "app_id": "",
+  "type": "ionic-angular",
+  "proxies": [
+    {
+      "path": "/api",
+      "proxyUrl": "https://voip.ms/api"
+    }
+  ],
+  "integrations": {
+    "cordova": {}
+  }
+}
