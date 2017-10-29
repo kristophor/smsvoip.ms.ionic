@@ -1,5 +1,5 @@
 # smsvoip.ms.ionic
-## A simple ionic SMS app for voip.ms SMS service
+**A simple ionic SMS app for voip.ms SMS service**
 
 voip.ms provide its own SMS service interface and its webbase sms center.
 https://sms.voip.ms
@@ -9,11 +9,15 @@ https://voip.ms/m/api.php
 
 ## Running the project
 
-### requires ionic-cli
-### requires node-gyp
-### requires python
-### requires gcc-make
+**requires**
+- ionic-cli
+- node-gyp
+- python
+- gcc-make
 
 Download the project
-and do **npm install**
-to run do **ionic serve**
+and do 
+```
+npm install
+ionic serve
+```
