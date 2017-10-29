@@ -15,5 +15,5 @@ https://voip.ms/m/api.php
 ### requires gcc-make
 
 Download the project
-and do ** npm install **
-to run do ** ionic serve **
+and do **npm install**
+to run do **ionic serve**
