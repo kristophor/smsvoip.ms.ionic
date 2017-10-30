@@ -5,7 +5,7 @@
       <ion-icon name="ios-settings-outline"></ion-icon>
     </button>
   </ion-buttons>
-  <ion-title text-center>Messages</ion-title>
+  <ion-title text-center>SMS of {{defaultDID}}</ion-title>
   <ion-buttons right>
     <button ion-button icon-only (click)="onNewMessage()">
       <ion-icon name="ios-add-circle-outline"></ion-icon>
@@ -15,6 +15,10 @@
 </ion-toolbar>
 </ion-header>
 <ion-content padding>
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content>
+    </ion-refresher-content>
+  </ion-refresher>
   <p *ngIf="loading">Loading....</p>
   <ion-list *ngIf="allChats?.size!=0">
     <ion-item-sliding *ngFor="let chat of allChats;let i of index" #item>

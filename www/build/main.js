@@ -40,12 +40,12 @@ webpackEmptyAsyncContext.id = 152;
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return MessagesPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(30);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(31);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__contact_picker_contact_picker__ = __webpack_require__(196);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__message_message__ = __webpack_require__(197);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__settings_settings__ = __webpack_require__(201);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__services_chat_service__ = __webpack_require__(41);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__services_setting_service__ = __webpack_require__(32);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__services_setting_service__ = __webpack_require__(28);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -80,10 +80,12 @@ var MessagesPage = (function () {
             this.subscriber = this.settingServ.credentialLoaded.subscribe(function (data) {
                 _this.loadChats();
                 _this.loading = false;
+                _this.defaultDID = _this.settingServ.credential.defaultDID;
             });
         }
         else {
             this.loadChats();
+            this.defaultDID = this.settingServ.credential.defaultDID;
         }
     };
     MessagesPage.prototype.loadChats = function () {
@@ -117,16 +119,25 @@ var MessagesPage = (function () {
     MessagesPage.prototype.onOpenChat = function (contact) {
         this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_3__message_message__["a" /* MessagePage */], contact);
     };
+    MessagesPage.prototype.doRefresh = function (refresher) {
+        var _this = this;
+        setTimeout(function () {
+            _this.getAllDIDMessages(refresher);
+        }, 1000);
+    };
+    MessagesPage.prototype.getAllDIDMessages = function (refresher) {
+        this.chatService.getChatItems();
+    };
     return MessagesPage;
 }());
 MessagesPage = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
-        selector: 'page-messages',template:/*ion-inline-start:"/Users/krisc/development/projects/smsvoip.ms/src/pages/messages/messages.html"*/'<ion-header>\n<ion-toolbar>\n  <ion-buttons left>\n    <button ion-button icon-only (click)="onOpenSettings()">\n      <ion-icon name="ios-settings-outline"></ion-icon>\n    </button>\n  </ion-buttons>\n  <ion-title text-center>Messages</ion-title>\n  <ion-buttons right>\n    <button ion-button icon-only (click)="onNewMessage()">\n      <ion-icon name="ios-add-circle-outline"></ion-icon>\n    </button>\n  </ion-buttons>\n\n</ion-toolbar>\n</ion-header>\n<ion-content padding>\n  <p *ngIf="loading">Loading....</p>\n  <ion-list *ngIf="allChats?.size!=0">\n    <ion-item-sliding *ngFor="let chat of allChats;let i of index" #item>\n      <ion-item (click)="onOpenChat(chat.title)">\n        <!--<ion-avatar item-start>-->\n          <!--<img [src]="chat.img">-->\n        <!--</ion-avatar>-->\n        <h2>{{chat.title}}</h2>\n        <p>{{chat.message}}</p>\n        <ion-note>\n          {{chat.date}}\n        </ion-note>\n      </ion-item>\n\n      <ion-item-options>\n        <button ion-button color="danger" (click)="delete(chat.title)">\n          <ion-icon name="trash"></ion-icon>\n          Delete\n        </button>\n      </ion-item-options>\n    </ion-item-sliding>\n  </ion-list>\n</ion-content>\n'/*ion-inline-end:"/Users/krisc/development/projects/smsvoip.ms/src/pages/messages/messages.html"*/
+        selector: 'page-messages',template:/*ion-inline-start:"/Users/krisc/development/projects/smsvoip.ms.ionic/src/pages/messages/messages.html"*/'<ion-header>\n<ion-toolbar>\n  <ion-buttons left>\n    <button ion-button icon-only (click)="onOpenSettings()">\n      <ion-icon name="ios-settings-outline"></ion-icon>\n    </button>\n  </ion-buttons>\n  <ion-title text-center>SMS of {{defaultDID}}</ion-title>\n  <ion-buttons right>\n    <button ion-button icon-only (click)="onNewMessage()">\n      <ion-icon name="ios-add-circle-outline"></ion-icon>\n    </button>\n  </ion-buttons>\n\n</ion-toolbar>\n</ion-header>\n<ion-content padding>\n  <ion-refresher (ionRefresh)="doRefresh($event)">\n    <ion-refresher-content>\n    </ion-refresher-content>\n  </ion-refresher>\n  <p *ngIf="loading">Loading....</p>\n  <ion-list *ngIf="allChats?.size!=0">\n    <ion-item-sliding *ngFor="let chat of allChats;let i of index" #item>\n      <ion-item (click)="onOpenChat(chat.title)">\n        <!--<ion-avatar item-start>-->\n          <!--<img [src]="chat.img">-->\n        <!--</ion-avatar>-->\n        <h2>{{chat.title}}</h2>\n        <p>{{chat.message}}</p>\n        <ion-note>\n          {{chat.date}}\n        </ion-note>\n      </ion-item>\n\n      <ion-item-options>\n        <button ion-button color="danger" (click)="delete(chat.title)">\n          <ion-icon name="trash"></ion-icon>\n          Delete\n        </button>\n      </ion-item-options>\n    </ion-item-sliding>\n  </ion-list>\n</ion-content>\n'/*ion-inline-end:"/Users/krisc/development/projects/smsvoip.ms.ionic/src/pages/messages/messages.html"*/
     }),
-    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["e" /* ModalController */], __WEBPACK_IMPORTED_MODULE_5__services_chat_service__["a" /* ChatService */],
-        __WEBPACK_IMPORTED_MODULE_6__services_setting_service__["a" /* SettingService */]])
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavController */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* ModalController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* ModalController */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_5__services_chat_service__["a" /* ChatService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_5__services_chat_service__["a" /* ChatService */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_6__services_setting_service__["a" /* SettingService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_6__services_setting_service__["a" /* SettingService */]) === "function" && _d || Object])
 ], MessagesPage);
 
+var _a, _b, _c, _d;
 //# sourceMappingURL=messages.js.map
 
 /***/ }),
@@ -137,7 +148,7 @@ MessagesPage = __decorate([
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ContactPickerPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(30);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(31);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -165,9 +176,9 @@ var ContactPickerPage = (function () {
 }());
 ContactPickerPage = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
-        selector: 'page-contact-picker',template:/*ion-inline-start:"/Users/krisc/development/projects/smsvoip.ms/src/pages/contact-picker/contact-picker.html"*/'<ion-header>\n  <ion-toolbar>\n    <ion-title text-center>Pick A Contact</ion-title>\n    <ion-buttons end>\n      <button ion-button icon-only (click)="onCancel()">\n        <ion-icon name="ios-close-outline"></ion-icon>\n      </button>\n    </ion-buttons>\n  </ion-toolbar>\n</ion-header>\n\n\n<ion-content padding>\n  <form #f="ngForm" (ngSubmit)="onSubmit(f)">\n  <ion-grid>\n    <ion-row>\n      <ion-col col-sm-6 col-lg-10 col-xl-12>\n        <ion-item>\n        <ion-label color="primary">TO:</ion-label>\n        <ion-input placeholder="enter contact" type="number" name="contact" required ngModel ></ion-input>\n        </ion-item>\n      </ion-col>\n      <ion-col col-2>\n        <button [disabled]="!f.valid" ion-button icon-only outline small type="submit">\n          <ion-icon name="ios-chatboxes-outline"></ion-icon>\n        </button>\n      </ion-col>\n    </ion-row>\n  </ion-grid>\n  </form>\n</ion-content>\n'/*ion-inline-end:"/Users/krisc/development/projects/smsvoip.ms/src/pages/contact-picker/contact-picker.html"*/,
+        selector: 'page-contact-picker',template:/*ion-inline-start:"/Users/krisc/development/projects/smsvoip.ms.ionic/src/pages/contact-picker/contact-picker.html"*/'<ion-header>\n  <ion-toolbar>\n    <ion-title text-center>Pick A Contact</ion-title>\n    <ion-buttons end>\n      <button ion-button icon-only (click)="onCancel()">\n        <ion-icon name="ios-close-outline"></ion-icon>\n      </button>\n    </ion-buttons>\n  </ion-toolbar>\n</ion-header>\n\n\n<ion-content padding>\n  <form #f="ngForm" (ngSubmit)="onSubmit(f)">\n  <ion-grid>\n    <ion-row>\n      <ion-col col-sm-6 col-lg-10 col-xl-12>\n        <ion-item>\n        <ion-label color="primary">TO:</ion-label>\n        <ion-input placeholder="enter contact" type="number" name="contact" required ngModel ></ion-input>\n        </ion-item>\n      </ion-col>\n      <ion-col col-2>\n        <button [disabled]="!f.valid" ion-button icon-only outline small type="submit">\n          <ion-icon name="ios-chatboxes-outline"></ion-icon>\n        </button>\n      </ion-col>\n    </ion-row>\n  </ion-grid>\n  </form>\n</ion-content>\n'/*ion-inline-end:"/Users/krisc/development/projects/smsvoip.ms.ionic/src/pages/contact-picker/contact-picker.html"*/,
     }),
-    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavParams */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* ViewController */]])
+    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavParams */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* ViewController */]])
 ], ContactPickerPage);
 
 //# sourceMappingURL=contact-picker.js.map
@@ -180,11 +191,12 @@ ContactPickerPage = __decorate([
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return MessagePage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(30);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(31);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_common__ = __webpack_require__(24);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__model_sms__ = __webpack_require__(271);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__services_chat_service__ = __webpack_require__(41);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__services_voip_service__ = __webpack_require__(200);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__services_setting_service__ = __webpack_require__(28);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -200,8 +212,9 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
 var MessagePage = (function () {
-    function MessagePage(navCtrl, navParams, datepipe, chatService, voipService, plt) {
+    function MessagePage(navCtrl, navParams, datepipe, chatService, voipService, plt, settingService) {
         var _this = this;
         this.navCtrl = navCtrl;
         this.navParams = navParams;
@@ -209,8 +222,10 @@ var MessagePage = (function () {
         this.chatService = chatService;
         this.voipService = voipService;
         this.plt = plt;
+        this.settingService = settingService;
         this.contact = this.navParams.data;
         this.chatService.loadChatItems();
+        this.defaultDID = this.settingService.credential.defaultDID;
         this.chatService.getSMSFromStorage(this.contact).then(function (data) {
             if (data == null)
                 _this.smss = [];
@@ -355,17 +370,17 @@ var MessagePage = (function () {
     return MessagePage;
 }());
 __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_13" /* ViewChild */])(__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* Content */]),
-    __metadata("design:type", __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* Content */])
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_13" /* ViewChild */])(__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["b" /* Content */]),
+    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["b" /* Content */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["b" /* Content */]) === "function" && _a || Object)
 ], MessagePage.prototype, "content", void 0);
 MessagePage = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
-        selector: 'page-message',template:/*ion-inline-start:"/Users/krisc/development/projects/smsvoip.ms/src/pages/message/message.html"*/'<!--\n  Generated template for the MessagePage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar>\n    <ion-title>Messages with {{contact}}</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n\n<ion-content padding #content>\n  <ion-refresher (ionRefresh)="doRefresh($event)">\n    <ion-refresher-content>\n    </ion-refresher-content>\n  </ion-refresher>\n  <ion-list>\n    <div *ngFor="let sms of smss" class="chatContainer">\n      <div class="chatwrapper" *ngIf="sms.type === \'0\'" style="float: right">\n        <div class="chatbox" *ngIf="sms.type === \'0\'" text-left style="background-color: #007ae8; float: right; color: white">\n          {{sms.message}}\n        </div>\n        <div class="rightTail"></div>\n      </div>\n      <div class="chatwrapper" *ngIf="sms.type === \'1\'" style="float: left" >\n        <div class="chatbox" *ngIf="sms.type === \'1\'" text-left style="background-color: #e8e8e8; float: left">\n          {{sms.message}}\n        </div>\n        <div class="leftTail"></div>\n      </div>\n\n      <div class="chatbox" *ngIf="sms.type === \'3\'" text-center style="width: 100%">\n        {{sms.date}}\n      </div>\n    </div>\n  </ion-list>\n</ion-content>\n<ion-footer>\n  <form #f="ngForm" (ngSubmit)="onSubmit(f)">\n    <ion-grid>\n      <ion-row>\n        <ion-col col-sm-6 col-lg-10 col-xl-12>\n          <ion-item>\n            <ion-textarea placeholder="Text message" type="text" name="message" #message required\n                          ngModel></ion-textarea>\n          </ion-item>\n        </ion-col>\n        <ion-col col-1>\n          <button [disabled]="!f.valid" ion-button icon-only outline small type="submit">\n            <ion-icon name="ios-send-outline"></ion-icon>\n          </button>\n        </ion-col>\n      </ion-row>\n    </ion-grid>\n  </form>\n</ion-footer>\n'/*ion-inline-end:"/Users/krisc/development/projects/smsvoip.ms/src/pages/message/message.html"*/,
+        selector: 'page-message',template:/*ion-inline-start:"/Users/krisc/development/projects/smsvoip.ms.ionic/src/pages/message/message.html"*/'<!--\n  Generated template for the MessagePage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar>\n    <ion-navbar>\n      <ion-title>{{contact}}\n        <p class="subtitle">DID: {{defaultDID}}</p>\n      </ion-title>\n    </ion-navbar>\n    <!--<ion-title>{{contact}} DID: {{defaultDID}}</ion-title>-->\n  </ion-navbar>\n\n</ion-header>\n\n\n<ion-content padding #content>\n  <ion-refresher (ionRefresh)="doRefresh($event)">\n    <ion-refresher-content>\n    </ion-refresher-content>\n  </ion-refresher>\n  <ion-list>\n    <div *ngFor="let sms of smss" class="chatContainer">\n      <div class="chatwrapper" *ngIf="sms.type === \'0\'" style="float: right">\n        <div class="chatbox" *ngIf="sms.type === \'0\'" text-left style="background-color: #007ae8; float: right; color: white">\n          {{sms.message}}\n        </div>\n        <div class="rightTail"></div>\n      </div>\n      <div class="chatwrapper" *ngIf="sms.type === \'1\'" style="float: left" >\n        <div class="chatbox" *ngIf="sms.type === \'1\'" text-left style="background-color: #e8e8e8; float: left">\n          {{sms.message}}\n        </div>\n        <div class="leftTail"></div>\n      </div>\n\n      <div class="chatbox" *ngIf="sms.type === \'3\'" text-center style="width: 100%">\n        {{sms.date}}\n      </div>\n    </div>\n  </ion-list>\n</ion-content>\n<ion-footer>\n  <form #f="ngForm" (ngSubmit)="onSubmit(f)">\n    <ion-grid>\n      <ion-row>\n        <ion-col col-sm-6 col-lg-10 col-xl-12>\n          <ion-item>\n            <ion-textarea placeholder="Text message" type="text" name="message" #message required\n                          ngModel></ion-textarea>\n          </ion-item>\n        </ion-col>\n        <ion-col col-1>\n          <button [disabled]="!f.valid" ion-button icon-only outline small type="submit">\n            <ion-icon name="ios-send-outline"></ion-icon>\n          </button>\n        </ion-col>\n      </ion-row>\n    </ion-grid>\n  </form>\n</ion-footer>\n'/*ion-inline-end:"/Users/krisc/development/projects/smsvoip.ms.ionic/src/pages/message/message.html"*/,
     }),
-    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavParams */], __WEBPACK_IMPORTED_MODULE_2__angular_common__["c" /* DatePipe */], __WEBPACK_IMPORTED_MODULE_4__services_chat_service__["a" /* ChatService */],
-        __WEBPACK_IMPORTED_MODULE_5__services_voip_service__["a" /* VoipService */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* Platform */]])
+    __metadata("design:paramtypes", [typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavController */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavParams */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavParams */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_2__angular_common__["c" /* DatePipe */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_common__["c" /* DatePipe */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_4__services_chat_service__["a" /* ChatService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__services_chat_service__["a" /* ChatService */]) === "function" && _e || Object, typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_5__services_voip_service__["a" /* VoipService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_5__services_voip_service__["a" /* VoipService */]) === "function" && _f || Object, typeof (_g = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* Platform */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* Platform */]) === "function" && _g || Object, typeof (_h = typeof __WEBPACK_IMPORTED_MODULE_6__services_setting_service__["a" /* SettingService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_6__services_setting_service__["a" /* SettingService */]) === "function" && _h || Object])
 ], MessagePage);
 
+var _a, _b, _c, _d, _e, _f, _g, _h;
 //# sourceMappingURL=message.js.map
 
 /***/ }),
@@ -393,7 +408,7 @@ ProxyService.VOIP_REST_URL = ""; // "https://voip.ms/"
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return VoipService; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_http__ = __webpack_require__(51);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__setting_service__ = __webpack_require__(32);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__setting_service__ = __webpack_require__(28);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__proxy_service__ = __webpack_require__(199);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -433,7 +448,7 @@ var VoipService = (function () {
         return this.http.get(__WEBPACK_IMPORTED_MODULE_3__proxy_service__["a" /* ProxyService */].VOIP_REST_URL + "api/v1/rest.php?api_username=" +
             this.settingService.credential.email + "&api_password=" +
             this.settingService.credential.password + "&method=getSMS" + "&did=" + this.settingService.credential.defaultDID +
-            "&contact=" + contactDID +
+            (contactDID == "" ? "" : "&contact=" + contactDID) +
             (lastDate == "" ? "" : "&from=" + lastDate) +
             (smsID == "" ? "" : "&sms=" + smsID));
     };
@@ -454,11 +469,10 @@ VoipService = __decorate([
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SettingsPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(30);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_setting_service__ = __webpack_require__(32);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_http__ = __webpack_require__(51);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__model_credential__ = __webpack_require__(276);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__services_chat_service__ = __webpack_require__(41);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(31);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_setting_service__ = __webpack_require__(28);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__model_credential__ = __webpack_require__(276);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__services_chat_service__ = __webpack_require__(41);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -473,19 +487,18 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
-
 var SettingsPage = (function () {
-    function SettingsPage(navCtrl, navParams, settingService, http, chatServ) {
+    function SettingsPage(navCtrl, navParams, settingService, chatServ, alertCtrl) {
         var _this = this;
         this.navCtrl = navCtrl;
         this.navParams = navParams;
         this.settingService = settingService;
-        this.http = http;
         this.chatServ = chatServ;
+        this.alertCtrl = alertCtrl;
         this.email = "";
         this.password = "";
         this.listOfDids = [];
-        this.credential = new __WEBPACK_IMPORTED_MODULE_4__model_credential__["a" /* Credential */](this.email, this.password, this.defaultDID, this.listOfDids);
+        this.credential = new __WEBPACK_IMPORTED_MODULE_3__model_credential__["a" /* Credential */](this.email, this.password, this.defaultDID, this.listOfDids);
         if (this.settingService.useUnsecuredStorage) {
             this.settingService.getCrendetialUnsecured().then(function (data) {
                 if (data != null) {
@@ -515,17 +528,29 @@ var SettingsPage = (function () {
         this.password = form.value.password;
         console.log(form);
         this.settingService.refreshDIDs(this.email, this.password).subscribe(function (data) {
-            console.log(JSON.stringify(data));
-            _this.listOfDids = [];
-            for (var _i = 0, _a = data.json().dids; _i < _a.length; _i++) {
-                var did = _a[_i];
-                console.log(did);
-                if (did.sms_available == 1 && did.sms_enabled == 1) {
-                    _this.listOfDids.push(did.did);
-                }
+            console.log(JSON.stringify(data.json()));
+            if (data.json().status != 'success') {
+                var alert = _this.alertCtrl.create({
+                    title: 'Login Error',
+                    message: ' Server deined logon due to ' + data.json().status,
+                    buttons: [{
+                            text: 'Ok'
+                        }]
+                });
+                alert.present();
             }
-            _this.credential = new __WEBPACK_IMPORTED_MODULE_4__model_credential__["a" /* Credential */](_this.email, _this.password, _this.defaultDID, _this.listOfDids);
-            _this.settingService.storeCredential(_this.credential);
+            else {
+                _this.listOfDids = [];
+                for (var _i = 0, _a = data.json().dids; _i < _a.length; _i++) {
+                    var did = _a[_i];
+                    console.log(did);
+                    if (did.sms_available == 1 && did.sms_enabled == 1) {
+                        _this.listOfDids.push(did.did);
+                    }
+                }
+                _this.credential = new __WEBPACK_IMPORTED_MODULE_3__model_credential__["a" /* Credential */](_this.email, _this.password, _this.defaultDID, _this.listOfDids);
+                _this.settingService.storeCredential(_this.credential);
+            }
         }, function (error) { return console.log(error); });
     };
     SettingsPage.prototype.onSelectDID = function (event) {
@@ -539,12 +564,12 @@ var SettingsPage = (function () {
 }());
 SettingsPage = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
-        selector: 'page-settings',template:/*ion-inline-start:"/Users/krisc/development/projects/smsvoip.ms/src/pages/settings/settings.html"*/'<!--\n  Generated template for the SettingsPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar>\n    <ion-title text-center>Settings</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n\n<ion-content padding>\n  <form #f="ngForm" (ngSubmit)="onSubmit(f)">\n    <ion-grid>\n      <ion-row>\n        <ion-col>\n          <ion-item>\n            <ion-label color="primary">E-mail</ion-label>\n            <ion-input placeholder="VOIP.ms email address" type="text" name="email" required email [ngModel]="email"></ion-input>\n          </ion-item>\n        </ion-col>\n      </ion-row>\n      <ion-row>\n        <ion-col>\n          <ion-item>\n            <ion-label color="primary">Password</ion-label>\n            <ion-input placeholder="VOIP.ms API password" type="password" name="password" required [ngModel]="password"></ion-input>\n          </ion-item>\n        </ion-col>\n      </ion-row>\n      <ion-row>\n        <ion-col>\n          <button [disabled]="!f.valid" ion-button outline block type="submit">\n            Refresh DIDs\n          </button>\n        </ion-col>\n      </ion-row>\n    </ion-grid>\n  </form>\n  <ion-item >\n    <ion-label>Default DID</ion-label>\n    <ion-select [(ngModel)]="defaultDID" okText="Select" cancelText="Dismiss" (ngModelChange)="onSelectDID($event)">\n      <ion-option *ngFor="let did of listOfDids; let i of index"  [value]="did">{{did}}</ion-option>\n    </ion-select>\n  </ion-item>\n</ion-content>\n'/*ion-inline-end:"/Users/krisc/development/projects/smsvoip.ms/src/pages/settings/settings.html"*/
+        selector: 'page-settings',template:/*ion-inline-start:"/Users/krisc/development/projects/smsvoip.ms.ionic/src/pages/settings/settings.html"*/'<!--\n  Generated template for the SettingsPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar>\n    <ion-title text-center>Settings</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n\n<ion-content padding>\n  <form #f="ngForm" (ngSubmit)="onSubmit(f)">\n    <ion-grid>\n      <ion-row>\n        <ion-col>\n          <ion-item>\n            <ion-label color="primary">E-mail</ion-label>\n            <ion-input placeholder="VOIP.ms email address" type="text" name="email" required email [ngModel]="email"></ion-input>\n          </ion-item>\n        </ion-col>\n      </ion-row>\n      <ion-row>\n        <ion-col>\n          <ion-item>\n            <ion-label color="primary">Password</ion-label>\n            <ion-input placeholder="VOIP.ms API password" type="password" name="password" required [ngModel]="password"></ion-input>\n          </ion-item>\n        </ion-col>\n      </ion-row>\n      <ion-row>\n        <ion-col>\n          <button [disabled]="!f.valid" ion-button outline block type="submit">\n            Refresh DIDs\n          </button>\n        </ion-col>\n      </ion-row>\n    </ion-grid>\n  </form>\n  <ion-item >\n    <ion-label>Default DID</ion-label>\n    <ion-select [(ngModel)]="defaultDID" okText="Select" cancelText="Dismiss" (ngModelChange)="onSelectDID($event)">\n      <ion-option *ngFor="let did of listOfDids; let i of index"  [value]="did">{{did}}</ion-option>\n    </ion-select>\n  </ion-item>\n</ion-content>\n'/*ion-inline-end:"/Users/krisc/development/projects/smsvoip.ms.ionic/src/pages/settings/settings.html"*/
     }),
-    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavParams */], __WEBPACK_IMPORTED_MODULE_2__services_setting_service__["a" /* SettingService */],
-        __WEBPACK_IMPORTED_MODULE_3__angular_http__["a" /* Http */], __WEBPACK_IMPORTED_MODULE_5__services_chat_service__["a" /* ChatService */]])
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavController */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavParams */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavParams */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_2__services_setting_service__["a" /* SettingService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__services_setting_service__["a" /* SettingService */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_4__services_chat_service__["a" /* ChatService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__services_chat_service__["a" /* ChatService */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */]) === "function" && _e || Object])
 ], SettingsPage);
 
+var _a, _b, _c, _d, _e;
 //# sourceMappingURL=settings.js.map
 
 /***/ }),
@@ -571,7 +596,7 @@ Object(__WEBPACK_IMPORTED_MODULE_0__angular_platform_browser_dynamic__["a" /* pl
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AppModule; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser__ = __webpack_require__(25);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_ionic_angular__ = __webpack_require__(30);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_ionic_angular__ = __webpack_require__(31);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ionic_native_splash_screen__ = __webpack_require__(192);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__ionic_native_status_bar__ = __webpack_require__(194);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__app_component__ = __webpack_require__(270);
@@ -579,7 +604,7 @@ Object(__WEBPACK_IMPORTED_MODULE_0__angular_platform_browser_dynamic__["a" /* pl
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__pages_contact_picker_contact_picker__ = __webpack_require__(196);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__pages_message_message__ = __webpack_require__(197);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__ionic_native_secure_storage__ = __webpack_require__(198);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__services_setting_service__ = __webpack_require__(32);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__services_setting_service__ = __webpack_require__(28);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__pages_settings_settings__ = __webpack_require__(201);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__angular_http__ = __webpack_require__(51);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__services_chat_service__ = __webpack_require__(41);
@@ -628,10 +653,10 @@ AppModule = __decorate([
         ],
         imports: [
             __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser__["a" /* BrowserModule */],
-            __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["d" /* IonicModule */].forRoot(__WEBPACK_IMPORTED_MODULE_5__app_component__["a" /* MyApp */]),
+            __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["e" /* IonicModule */].forRoot(__WEBPACK_IMPORTED_MODULE_5__app_component__["a" /* MyApp */]),
             __WEBPACK_IMPORTED_MODULE_12__angular_http__["b" /* HttpModule */]
         ],
-        bootstrap: [__WEBPACK_IMPORTED_MODULE_2_ionic_angular__["b" /* IonicApp */]],
+        bootstrap: [__WEBPACK_IMPORTED_MODULE_2_ionic_angular__["c" /* IonicApp */]],
         entryComponents: [
             __WEBPACK_IMPORTED_MODULE_5__app_component__["a" /* MyApp */],
             __WEBPACK_IMPORTED_MODULE_6__pages_messages_messages__["a" /* MessagesPage */],
@@ -642,7 +667,7 @@ AppModule = __decorate([
         providers: [
             __WEBPACK_IMPORTED_MODULE_4__ionic_native_status_bar__["a" /* StatusBar */],
             __WEBPACK_IMPORTED_MODULE_3__ionic_native_splash_screen__["a" /* SplashScreen */],
-            { provide: __WEBPACK_IMPORTED_MODULE_1__angular_core__["v" /* ErrorHandler */], useClass: __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["c" /* IonicErrorHandler */] },
+            { provide: __WEBPACK_IMPORTED_MODULE_1__angular_core__["v" /* ErrorHandler */], useClass: __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["d" /* IonicErrorHandler */] },
             { provide: __WEBPACK_IMPORTED_MODULE_15__ionic_storage__["a" /* Storage */], useFactory: provideStorage },
             __WEBPACK_IMPORTED_MODULE_9__ionic_native_secure_storage__["a" /* SecureStorage */],
             __WEBPACK_IMPORTED_MODULE_10__services_setting_service__["a" /* SettingService */],
@@ -665,11 +690,11 @@ AppModule = __decorate([
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return MyApp; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(30);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(31);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ionic_native_status_bar__ = __webpack_require__(194);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ionic_native_splash_screen__ = __webpack_require__(192);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__pages_messages_messages__ = __webpack_require__(195);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__services_setting_service__ = __webpack_require__(32);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__services_setting_service__ = __webpack_require__(28);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__services_chat_service__ = __webpack_require__(41);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -689,6 +714,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 var MyApp = (function () {
     function MyApp(platform, statusBar, splashScreen, settingService, chatService) {
+        var _this = this;
         this.settingService = settingService;
         this.chatService = chatService;
         this.rootPage = __WEBPACK_IMPORTED_MODULE_4__pages_messages_messages__["a" /* MessagesPage */];
@@ -697,16 +723,16 @@ var MyApp = (function () {
             // Here you can do any higher level native things you might need.
             statusBar.styleDefault();
             splashScreen.hide();
-            settingService.init();
-            chatService.loadChatItems();
+            _this.settingService.init();
+            _this.chatService.loadChatItems();
         });
     }
     return MyApp;
 }());
 MyApp = __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({template:/*ion-inline-start:"/Users/krisc/development/projects/smsvoip.ms/src/app/app.html"*/'<ion-nav [root]="rootPage"></ion-nav>\n'/*ion-inline-end:"/Users/krisc/development/projects/smsvoip.ms/src/app/app.html"*/
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({template:/*ion-inline-start:"/Users/krisc/development/projects/smsvoip.ms.ionic/src/app/app.html"*/'<ion-nav [root]="rootPage"></ion-nav>\n'/*ion-inline-end:"/Users/krisc/development/projects/smsvoip.ms.ionic/src/app/app.html"*/
     }),
-    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* Platform */], __WEBPACK_IMPORTED_MODULE_2__ionic_native_status_bar__["a" /* StatusBar */], __WEBPACK_IMPORTED_MODULE_3__ionic_native_splash_screen__["a" /* SplashScreen */], __WEBPACK_IMPORTED_MODULE_5__services_setting_service__["a" /* SettingService */], __WEBPACK_IMPORTED_MODULE_6__services_chat_service__["a" /* ChatService */]])
+    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* Platform */], __WEBPACK_IMPORTED_MODULE_2__ionic_native_status_bar__["a" /* StatusBar */], __WEBPACK_IMPORTED_MODULE_3__ionic_native_splash_screen__["a" /* SplashScreen */], __WEBPACK_IMPORTED_MODULE_5__services_setting_service__["a" /* SettingService */], __WEBPACK_IMPORTED_MODULE_6__services_chat_service__["a" /* ChatService */]])
 ], MyApp);
 
 //# sourceMappingURL=app.component.js.map
@@ -765,7 +791,7 @@ var Credential = (function () {
 
 /***/ }),
 
-/***/ 32:
+/***/ 28:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -843,10 +869,10 @@ var SettingService = (function () {
 }());
 SettingService = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["B" /* Injectable */])(),
-    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_0__ionic_native_secure_storage__["a" /* SecureStorage */], __WEBPACK_IMPORTED_MODULE_2__ionic_storage__["a" /* Storage */],
-        __WEBPACK_IMPORTED_MODULE_3__angular_http__["a" /* Http */]])
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__ionic_native_secure_storage__["a" /* SecureStorage */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__ionic_native_secure_storage__["a" /* SecureStorage */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__ionic_storage__["a" /* Storage */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__ionic_storage__["a" /* Storage */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_3__angular_http__["a" /* Http */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__angular_http__["a" /* Http */]) === "function" && _c || Object])
 ], SettingService);
 
+var _a, _b, _c;
 //# sourceMappingURL=setting-service.js.map
 
 /***/ }),
@@ -860,7 +886,7 @@ SettingService = __decorate([
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_common__ = __webpack_require__(24);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__model_chat_item__ = __webpack_require__(275);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__setting_service__ = __webpack_require__(32);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__setting_service__ = __webpack_require__(28);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);

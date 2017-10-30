@@ -1,5 +1,5 @@
 import {SecureStorage, SecureStorageObject} from "@ionic-native/secure-storage";
-import {EventEmitter, Injectable, Output} from "@angular/core";
+import {EventEmitter, Injectable} from "@angular/core";
 import {Credential} from "../model/credential";
 import {Storage} from "@ionic/storage";
 import {Http} from "@angular/http";
