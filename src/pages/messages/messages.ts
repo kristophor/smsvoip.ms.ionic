@@ -5,6 +5,8 @@ import {MessagePage} from "../message/message";
 import {SettingsPage} from "../settings/settings";
 import {ChatService} from "../../services/chat-service";
 import {SettingService} from "../../services/setting-service";
+import {VoipService} from "../../services/voip-service";
+import {SMS} from "../../model/sms";
 
 @Component({
     selector: 'page-messages',
@@ -18,7 +20,7 @@ export class MessagesPage {
     private defaultDID;
 
     constructor(public navCtrl: NavController, public modalCtrl: ModalController, private chatService: ChatService,
-                private settingServ: SettingService) {
+                private settingServ: SettingService, private voipService: VoipService) {
     }
 
     ngOnDestroy() {
@@ -89,7 +91,36 @@ export class MessagesPage {
     }
 
     getAllDIDMessages(refresher){
+        var messageMap : Map<string, SMS[]> = new Map<string, SMS[]>();
+        this.voipService.getMessage("", "","").subscribe(
+            res =>{
+                console.log(res.json());
+                var data = res.json();
+                if(data.status == "no_sms") {
+                    refresher.complete();
+                    return;
+                }else{
+                    for(let sms of data.sms){
+                        if(messageMap.has(sms.contact)){
+                            messageMap.get(sms.contact).push(sms);
+                        }else{
+                            messageMap.set(sms.contact, [sms]);
+                        }
+                    }
+                    messageMap.forEach((smss, contact)=>{
+                        if(smss != null && smss.length !=0 && smss[0].did == this.settingServ.credential.defaultDID){
+                            this.chatService.saveSMSstoStorage(contact, smss);
+                        }
+                    });
+                    this.loadChats();
+                    refresher.complete();
+                }
+            },
+            error2 => {
+                console.log(error2)
+                refresher.complete();
+            }
+            );
 
-        this.chatService.getChatItems();
     }
 }

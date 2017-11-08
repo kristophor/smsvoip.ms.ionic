@@ -1,6 +1,68 @@
 webpackJsonp([0],{
 
-/***/ 111:
+/***/ 104:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return VoipService; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_http__ = __webpack_require__(103);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__setting_service__ = __webpack_require__(28);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__proxy_service__ = __webpack_require__(200);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+var VoipService = (function () {
+    function VoipService(http, settingService) {
+        this.http = http;
+        this.settingService = settingService;
+    }
+    VoipService.prototype.reinit = function () {
+        if (this.settingService.credential == null || this.settingService.credential.defaultDID == null
+            || this.settingService.credential.defaultDID == "") {
+            this.settingService.init();
+        }
+    };
+    VoipService.prototype.sendMessage = function (message, destination) {
+        this.reinit();
+        return this.http.get(__WEBPACK_IMPORTED_MODULE_3__proxy_service__["a" /* ProxyService */].VOIP_REST_URL + "api/v1/rest.php?api_username=" +
+            this.settingService.credential.email + "&api_password=" +
+            this.settingService.credential.password + "&method=sendSMS" +
+            "&did=" + this.settingService.credential.defaultDID +
+            "&dst=" + destination +
+            "&message=" + message);
+    };
+    VoipService.prototype.getMessage = function (smsID, contactDID, lastDate) {
+        this.reinit();
+        return this.http.get(__WEBPACK_IMPORTED_MODULE_3__proxy_service__["a" /* ProxyService */].VOIP_REST_URL + "api/v1/rest.php?api_username=" +
+            this.settingService.credential.email + "&api_password=" +
+            this.settingService.credential.password + "&method=getSMS" + "&did=" + this.settingService.credential.defaultDID +
+            (contactDID == "" ? "" : "&contact=" + contactDID) +
+            (lastDate == "" ? "" : "&from=" + lastDate) +
+            (smsID == "" ? "" : "&sms=" + smsID));
+    };
+    return VoipService;
+}());
+VoipService = __decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["B" /* Injectable */])(),
+    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__angular_http__["a" /* Http */], __WEBPACK_IMPORTED_MODULE_2__setting_service__["a" /* SettingService */]])
+], VoipService);
+
+//# sourceMappingURL=voip-service.js.map
+
+/***/ }),
+
+/***/ 112:
 /***/ (function(module, exports) {
 
 function webpackEmptyAsyncContext(req) {
@@ -13,11 +75,11 @@ function webpackEmptyAsyncContext(req) {
 webpackEmptyAsyncContext.keys = function() { return []; };
 webpackEmptyAsyncContext.resolve = webpackEmptyAsyncContext;
 module.exports = webpackEmptyAsyncContext;
-webpackEmptyAsyncContext.id = 111;
+webpackEmptyAsyncContext.id = 112;
 
 /***/ }),
 
-/***/ 152:
+/***/ 153:
 /***/ (function(module, exports) {
 
 function webpackEmptyAsyncContext(req) {
@@ -30,22 +92,23 @@ function webpackEmptyAsyncContext(req) {
 webpackEmptyAsyncContext.keys = function() { return []; };
 webpackEmptyAsyncContext.resolve = webpackEmptyAsyncContext;
 module.exports = webpackEmptyAsyncContext;
-webpackEmptyAsyncContext.id = 152;
+webpackEmptyAsyncContext.id = 153;
 
 /***/ }),
 
-/***/ 195:
+/***/ 196:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return MessagesPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(31);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__contact_picker_contact_picker__ = __webpack_require__(196);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__message_message__ = __webpack_require__(197);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__contact_picker_contact_picker__ = __webpack_require__(197);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__message_message__ = __webpack_require__(198);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__settings_settings__ = __webpack_require__(201);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__services_chat_service__ = __webpack_require__(41);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__services_setting_service__ = __webpack_require__(28);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__services_voip_service__ = __webpack_require__(104);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -62,12 +125,14 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
 var MessagesPage = (function () {
-    function MessagesPage(navCtrl, modalCtrl, chatService, settingServ) {
+    function MessagesPage(navCtrl, modalCtrl, chatService, settingServ, voipService) {
         this.navCtrl = navCtrl;
         this.modalCtrl = modalCtrl;
         this.chatService = chatService;
         this.settingServ = settingServ;
+        this.voipService = voipService;
     }
     MessagesPage.prototype.ngOnDestroy = function () {
         this.subscriber.unsubscribe();
@@ -126,7 +191,37 @@ var MessagesPage = (function () {
         }, 1000);
     };
     MessagesPage.prototype.getAllDIDMessages = function (refresher) {
-        this.chatService.getChatItems();
+        var _this = this;
+        var messageMap = new Map();
+        this.voipService.getMessage("", "", "").subscribe(function (res) {
+            console.log(res.json());
+            var data = res.json();
+            if (data.status == "no_sms") {
+                refresher.complete();
+                return;
+            }
+            else {
+                for (var _i = 0, _a = data.sms; _i < _a.length; _i++) {
+                    var sms = _a[_i];
+                    if (messageMap.has(sms.contact)) {
+                        messageMap.get(sms.contact).push(sms);
+                    }
+                    else {
+                        messageMap.set(sms.contact, [sms]);
+                    }
+                }
+                messageMap.forEach(function (smss, contact) {
+                    if (smss != null && smss.length != 0 && smss[0].did == _this.settingServ.credential.defaultDID) {
+                        _this.chatService.saveSMSstoStorage(contact, smss);
+                    }
+                });
+                _this.loadChats();
+                refresher.complete();
+            }
+        }, function (error2) {
+            console.log(error2);
+            refresher.complete();
+        });
     };
     return MessagesPage;
 }());
@@ -134,15 +229,15 @@ MessagesPage = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
         selector: 'page-messages',template:/*ion-inline-start:"/Users/krisc/development/projects/smsvoip.ms.ionic/src/pages/messages/messages.html"*/'<ion-header>\n<ion-toolbar>\n  <ion-buttons left>\n    <button ion-button icon-only (click)="onOpenSettings()">\n      <ion-icon name="ios-settings-outline"></ion-icon>\n    </button>\n  </ion-buttons>\n  <ion-title text-center>SMS of {{defaultDID}}</ion-title>\n  <ion-buttons right>\n    <button ion-button icon-only (click)="onNewMessage()">\n      <ion-icon name="ios-add-circle-outline"></ion-icon>\n    </button>\n  </ion-buttons>\n\n</ion-toolbar>\n</ion-header>\n<ion-content padding>\n  <ion-refresher (ionRefresh)="doRefresh($event)">\n    <ion-refresher-content>\n    </ion-refresher-content>\n  </ion-refresher>\n  <p *ngIf="loading">Loading....</p>\n  <ion-list *ngIf="allChats?.size!=0">\n    <ion-item-sliding *ngFor="let chat of allChats;let i of index" #item>\n      <ion-item (click)="onOpenChat(chat.title)">\n        <!--<ion-avatar item-start>-->\n          <!--<img [src]="chat.img">-->\n        <!--</ion-avatar>-->\n        <h2>{{chat.title}}</h2>\n        <p>{{chat.message}}</p>\n        <ion-note>\n          {{chat.date}}\n        </ion-note>\n      </ion-item>\n\n      <ion-item-options>\n        <button ion-button color="danger" (click)="delete(chat.title)">\n          <ion-icon name="trash"></ion-icon>\n          Delete\n        </button>\n      </ion-item-options>\n    </ion-item-sliding>\n  </ion-list>\n</ion-content>\n'/*ion-inline-end:"/Users/krisc/development/projects/smsvoip.ms.ionic/src/pages/messages/messages.html"*/
     }),
-    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavController */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* ModalController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* ModalController */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_5__services_chat_service__["a" /* ChatService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_5__services_chat_service__["a" /* ChatService */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_6__services_setting_service__["a" /* SettingService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_6__services_setting_service__["a" /* SettingService */]) === "function" && _d || Object])
+    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* ModalController */], __WEBPACK_IMPORTED_MODULE_5__services_chat_service__["a" /* ChatService */],
+        __WEBPACK_IMPORTED_MODULE_6__services_setting_service__["a" /* SettingService */], __WEBPACK_IMPORTED_MODULE_7__services_voip_service__["a" /* VoipService */]])
 ], MessagesPage);
 
-var _a, _b, _c, _d;
 //# sourceMappingURL=messages.js.map
 
 /***/ }),
 
-/***/ 196:
+/***/ 197:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -185,7 +280,7 @@ ContactPickerPage = __decorate([
 
 /***/ }),
 
-/***/ 197:
+/***/ 198:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -195,7 +290,7 @@ ContactPickerPage = __decorate([
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_common__ = __webpack_require__(24);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__model_sms__ = __webpack_require__(271);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__services_chat_service__ = __webpack_require__(41);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__services_voip_service__ = __webpack_require__(200);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__services_voip_service__ = __webpack_require__(104);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__services_setting_service__ = __webpack_require__(28);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -215,7 +310,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 var MessagePage = (function () {
     function MessagePage(navCtrl, navParams, datepipe, chatService, voipService, plt, settingService) {
-        var _this = this;
         this.navCtrl = navCtrl;
         this.navParams = navParams;
         this.datepipe = datepipe;
@@ -223,6 +317,9 @@ var MessagePage = (function () {
         this.voipService = voipService;
         this.plt = plt;
         this.settingService = settingService;
+    }
+    MessagePage.prototype.init = function () {
+        var _this = this;
         this.contact = this.navParams.data;
         this.chatService.loadChatItems();
         this.defaultDID = this.settingService.credential.defaultDID;
@@ -235,8 +332,9 @@ var MessagePage = (function () {
             console.log(error);
         });
         console.log(this.contact);
-    }
+    };
     MessagePage.prototype.ionViewWillEnter = function () {
+        this.init();
         this.scrollToBottom();
     };
     MessagePage.prototype.scrollToBottom = function () {
@@ -279,7 +377,7 @@ var MessagePage = (function () {
                     console.log(data2);
                     originalSMSs.push(data2.sms[0]);
                     _this.smss = originalSMSs;
-                    _this.chatService.saveSMStoStorage(_this.contact, _this.smss);
+                    _this.chatService.saveSMSstoStorage(_this.contact, _this.smss);
                     _this.scrollToBottom();
                 }
             }, function (error) {
@@ -304,7 +402,7 @@ var MessagePage = (function () {
                 dividerMsg.date = _this.smss[_this.smss.length - 1].date;
                 dividerMsg.type = "3";
                 _this.smss.push(dividerMsg);
-                _this.chatService.saveSMStoStorage(_this.contact, _this.smss);
+                _this.chatService.saveSMSstoStorage(_this.contact, _this.smss);
                 _this.scrollToBottom();
             }
             refresher.complete();
@@ -347,7 +445,7 @@ var MessagePage = (function () {
                     }
                 }
                 console.log(_this.smss);
-                _this.chatService.saveSMStoStorage(_this.contact, _this.smss);
+                _this.chatService.saveSMSstoStorage(_this.contact, _this.smss);
                 _this.scrollToBottom();
             }
             refresher.complete();
@@ -371,21 +469,21 @@ var MessagePage = (function () {
 }());
 __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_13" /* ViewChild */])(__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["b" /* Content */]),
-    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["b" /* Content */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["b" /* Content */]) === "function" && _a || Object)
+    __metadata("design:type", __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["b" /* Content */])
 ], MessagePage.prototype, "content", void 0);
 MessagePage = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
         selector: 'page-message',template:/*ion-inline-start:"/Users/krisc/development/projects/smsvoip.ms.ionic/src/pages/message/message.html"*/'<!--\n  Generated template for the MessagePage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar>\n    <ion-navbar>\n      <ion-title>{{contact}}\n        <p class="subtitle">DID: {{defaultDID}}</p>\n      </ion-title>\n    </ion-navbar>\n    <!--<ion-title>{{contact}} DID: {{defaultDID}}</ion-title>-->\n  </ion-navbar>\n\n</ion-header>\n\n\n<ion-content padding #content>\n  <ion-refresher (ionRefresh)="doRefresh($event)">\n    <ion-refresher-content>\n    </ion-refresher-content>\n  </ion-refresher>\n  <ion-list>\n    <div *ngFor="let sms of smss" class="chatContainer">\n      <div class="chatwrapper" *ngIf="sms.type === \'0\'" style="float: right">\n        <div class="chatbox" *ngIf="sms.type === \'0\'" text-left style="background-color: #007ae8; float: right; color: white">\n          {{sms.message}}\n        </div>\n        <div class="rightTail"></div>\n      </div>\n      <div class="chatwrapper" *ngIf="sms.type === \'1\'" style="float: left" >\n        <div class="chatbox" *ngIf="sms.type === \'1\'" text-left style="background-color: #e8e8e8; float: left">\n          {{sms.message}}\n        </div>\n        <div class="leftTail"></div>\n      </div>\n\n      <div class="chatbox" *ngIf="sms.type === \'3\'" text-center style="width: 100%">\n        {{sms.date}}\n      </div>\n    </div>\n  </ion-list>\n</ion-content>\n<ion-footer>\n  <form #f="ngForm" (ngSubmit)="onSubmit(f)">\n    <ion-grid>\n      <ion-row>\n        <ion-col col-sm-6 col-lg-10 col-xl-12>\n          <ion-item>\n            <ion-textarea placeholder="Text message" type="text" name="message" #message required\n                          ngModel></ion-textarea>\n          </ion-item>\n        </ion-col>\n        <ion-col col-1>\n          <button [disabled]="!f.valid" ion-button icon-only outline small type="submit">\n            <ion-icon name="ios-send-outline"></ion-icon>\n          </button>\n        </ion-col>\n      </ion-row>\n    </ion-grid>\n  </form>\n</ion-footer>\n'/*ion-inline-end:"/Users/krisc/development/projects/smsvoip.ms.ionic/src/pages/message/message.html"*/,
     }),
-    __metadata("design:paramtypes", [typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavController */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavParams */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavParams */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_2__angular_common__["c" /* DatePipe */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_common__["c" /* DatePipe */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_4__services_chat_service__["a" /* ChatService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__services_chat_service__["a" /* ChatService */]) === "function" && _e || Object, typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_5__services_voip_service__["a" /* VoipService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_5__services_voip_service__["a" /* VoipService */]) === "function" && _f || Object, typeof (_g = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* Platform */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* Platform */]) === "function" && _g || Object, typeof (_h = typeof __WEBPACK_IMPORTED_MODULE_6__services_setting_service__["a" /* SettingService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_6__services_setting_service__["a" /* SettingService */]) === "function" && _h || Object])
+    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavParams */], __WEBPACK_IMPORTED_MODULE_2__angular_common__["c" /* DatePipe */], __WEBPACK_IMPORTED_MODULE_4__services_chat_service__["a" /* ChatService */],
+        __WEBPACK_IMPORTED_MODULE_5__services_voip_service__["a" /* VoipService */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* Platform */], __WEBPACK_IMPORTED_MODULE_6__services_setting_service__["a" /* SettingService */]])
 ], MessagePage);
 
-var _a, _b, _c, _d, _e, _f, _g, _h;
 //# sourceMappingURL=message.js.map
 
 /***/ }),
 
-/***/ 199:
+/***/ 200:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -398,68 +496,6 @@ var ProxyService = (function () {
 
 ProxyService.VOIP_REST_URL = ""; // "https://voip.ms/"
 //# sourceMappingURL=proxy-service.js.map
-
-/***/ }),
-
-/***/ 200:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return VoipService; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_http__ = __webpack_require__(51);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__setting_service__ = __webpack_require__(28);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__proxy_service__ = __webpack_require__(199);
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-
-
-var VoipService = (function () {
-    function VoipService(http, settingService) {
-        this.http = http;
-        this.settingService = settingService;
-    }
-    VoipService.prototype.reinit = function () {
-        if (this.settingService.credential == null || this.settingService.credential.defaultDID == null
-            || this.settingService.credential.defaultDID == "") {
-            this.settingService.init();
-        }
-    };
-    VoipService.prototype.sendMessage = function (message, destination) {
-        this.reinit();
-        return this.http.get(__WEBPACK_IMPORTED_MODULE_3__proxy_service__["a" /* ProxyService */].VOIP_REST_URL + "api/v1/rest.php?api_username=" +
-            this.settingService.credential.email + "&api_password=" +
-            this.settingService.credential.password + "&method=sendSMS" +
-            "&did=" + this.settingService.credential.defaultDID +
-            "&dst=" + destination +
-            "&message=" + message);
-    };
-    VoipService.prototype.getMessage = function (smsID, contactDID, lastDate) {
-        this.reinit();
-        return this.http.get(__WEBPACK_IMPORTED_MODULE_3__proxy_service__["a" /* ProxyService */].VOIP_REST_URL + "api/v1/rest.php?api_username=" +
-            this.settingService.credential.email + "&api_password=" +
-            this.settingService.credential.password + "&method=getSMS" + "&did=" + this.settingService.credential.defaultDID +
-            (contactDID == "" ? "" : "&contact=" + contactDID) +
-            (lastDate == "" ? "" : "&from=" + lastDate) +
-            (smsID == "" ? "" : "&sms=" + smsID));
-    };
-    return VoipService;
-}());
-VoipService = __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["B" /* Injectable */])(),
-    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__angular_http__["a" /* Http */], __WEBPACK_IMPORTED_MODULE_2__setting_service__["a" /* SettingService */]])
-], VoipService);
-
-//# sourceMappingURL=voip-service.js.map
 
 /***/ }),
 
@@ -558,6 +594,7 @@ var SettingsPage = (function () {
         console.log("default is " + this.defaultDID);
         this.credential.defaultDID = this.defaultDID;
         this.settingService.storeCredential(this.credential);
+        console.log("changing chat items");
         this.chatServ.loadChatItems();
     };
     return SettingsPage;
@@ -597,20 +634,20 @@ Object(__WEBPACK_IMPORTED_MODULE_0__angular_platform_browser_dynamic__["a" /* pl
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser__ = __webpack_require__(25);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_ionic_angular__ = __webpack_require__(31);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ionic_native_splash_screen__ = __webpack_require__(192);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__ionic_native_status_bar__ = __webpack_require__(194);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ionic_native_splash_screen__ = __webpack_require__(193);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__ionic_native_status_bar__ = __webpack_require__(195);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__app_component__ = __webpack_require__(270);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__pages_messages_messages__ = __webpack_require__(195);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__pages_contact_picker_contact_picker__ = __webpack_require__(196);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__pages_message_message__ = __webpack_require__(197);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__ionic_native_secure_storage__ = __webpack_require__(198);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__pages_messages_messages__ = __webpack_require__(196);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__pages_contact_picker_contact_picker__ = __webpack_require__(197);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__pages_message_message__ = __webpack_require__(198);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__ionic_native_secure_storage__ = __webpack_require__(199);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__services_setting_service__ = __webpack_require__(28);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__pages_settings_settings__ = __webpack_require__(201);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__angular_http__ = __webpack_require__(51);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__angular_http__ = __webpack_require__(103);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__services_chat_service__ = __webpack_require__(41);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__angular_common__ = __webpack_require__(24);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__ionic_storage__ = __webpack_require__(103);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__services_voip_service__ = __webpack_require__(200);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__ionic_storage__ = __webpack_require__(102);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__services_voip_service__ = __webpack_require__(104);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -691,9 +728,9 @@ AppModule = __decorate([
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return MyApp; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(31);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ionic_native_status_bar__ = __webpack_require__(194);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ionic_native_splash_screen__ = __webpack_require__(192);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__pages_messages_messages__ = __webpack_require__(195);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ionic_native_status_bar__ = __webpack_require__(195);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ionic_native_splash_screen__ = __webpack_require__(193);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__pages_messages_messages__ = __webpack_require__(196);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__services_setting_service__ = __webpack_require__(28);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__services_chat_service__ = __webpack_require__(41);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -796,11 +833,11 @@ var Credential = (function () {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SettingService; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__ionic_native_secure_storage__ = __webpack_require__(198);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__ionic_native_secure_storage__ = __webpack_require__(199);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ionic_storage__ = __webpack_require__(103);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_http__ = __webpack_require__(51);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__proxy_service__ = __webpack_require__(199);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ionic_storage__ = __webpack_require__(102);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_http__ = __webpack_require__(103);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__proxy_service__ = __webpack_require__(200);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -869,10 +906,10 @@ var SettingService = (function () {
 }());
 SettingService = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["B" /* Injectable */])(),
-    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__ionic_native_secure_storage__["a" /* SecureStorage */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__ionic_native_secure_storage__["a" /* SecureStorage */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__ionic_storage__["a" /* Storage */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__ionic_storage__["a" /* Storage */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_3__angular_http__["a" /* Http */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__angular_http__["a" /* Http */]) === "function" && _c || Object])
+    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_0__ionic_native_secure_storage__["a" /* SecureStorage */], __WEBPACK_IMPORTED_MODULE_2__ionic_storage__["a" /* Storage */],
+        __WEBPACK_IMPORTED_MODULE_3__angular_http__["a" /* Http */]])
 ], SettingService);
 
-var _a, _b, _c;
 //# sourceMappingURL=setting-service.js.map
 
 /***/ }),
@@ -882,7 +919,7 @@ var _a, _b, _c;
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ChatService; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__ionic_storage__ = __webpack_require__(103);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__ionic_storage__ = __webpack_require__(102);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_common__ = __webpack_require__(24);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__model_chat_item__ = __webpack_require__(275);
@@ -917,10 +954,13 @@ var ChatService = (function () {
     };
     ChatService.prototype.loadChatItems = function () {
         var _this = this;
+        console.log(this.settingService.credential);
+        this.chatItems = [];
         if (this.settingService.credential != null && this.settingService.credential.defaultDID != null) {
             this.storage.get(this.CHATITEM_KEY + this.settingService.credential.defaultDID).then(function (data) {
                 if (data != null) {
-                    //console.log(data);
+                    console.log(data);
+                    console.log("chat item changed");
                     _this.chatItems = data;
                 }
             }, function (error) {
@@ -962,7 +1002,8 @@ var ChatService = (function () {
     ChatService.prototype.getChatItemsFromStorage = function () {
         return this.storage.get(this.CHATITEM_KEY + this.settingService.credential.defaultDID);
     };
-    ChatService.prototype.saveSMStoStorage = function (contact, smss) {
+    ChatService.prototype.saveSMSstoStorage = function (contact, smss) {
+        console.log("what is the contact", contact);
         var index = this.phoneNumbers.indexOf(contact);
         console.log("what is index ? = " + index);
         console.log("what is phonenumbers  ? = " + JSON.stringify(this.phoneNumbers));
@@ -970,6 +1011,15 @@ var ChatService = (function () {
             console.log("saving SMS");
             var lastIndexSMS = smss.length - 1;
             this.chatItems[index] = new __WEBPACK_IMPORTED_MODULE_3__model_chat_item__["a" /* ChatItem */](contact, smss[lastIndexSMS].message, smss[lastIndexSMS].date);
+            this.storage.set(contact, smss);
+            this.storeChatItems();
+            this.storePhoneNumber();
+        }
+        else {
+            this.phoneNumbers.push(contact);
+            console.log("saving SMS");
+            var lastIndexSMS = smss.length - 1;
+            this.chatItems.push(new __WEBPACK_IMPORTED_MODULE_3__model_chat_item__["a" /* ChatItem */](contact, smss[lastIndexSMS].message, smss[lastIndexSMS].date));
             this.storage.set(contact, smss);
             this.storeChatItems();
             this.storePhoneNumber();
@@ -999,9 +1049,10 @@ var ChatService = (function () {
 }());
 ChatService = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["B" /* Injectable */])(),
-    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_0__ionic_storage__["a" /* Storage */], __WEBPACK_IMPORTED_MODULE_2__angular_common__["c" /* DatePipe */], __WEBPACK_IMPORTED_MODULE_4__setting_service__["a" /* SettingService */]])
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__ionic_storage__["a" /* Storage */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__ionic_storage__["a" /* Storage */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__angular_common__["c" /* DatePipe */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_common__["c" /* DatePipe */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_4__setting_service__["a" /* SettingService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__setting_service__["a" /* SettingService */]) === "function" && _c || Object])
 ], ChatService);
 
+var _a, _b, _c;
 //# sourceMappingURL=chat-service.js.map
 
 /***/ })

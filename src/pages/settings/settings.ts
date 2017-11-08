@@ -85,6 +85,7 @@ export class SettingsPage {
         console.log("default is " + this.defaultDID);
         this.credential.defaultDID = this.defaultDID;
         this.settingService.storeCredential(this.credential);
+        console.log("changing chat items");
         this.chatServ.loadChatItems();
     }
 

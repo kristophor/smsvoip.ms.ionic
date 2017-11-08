@@ -19,6 +19,9 @@ export class MessagePage {
 
     constructor(public navCtrl: NavController, public navParams: NavParams, public datepipe: DatePipe, private chatService: ChatService,
                 private voipService: VoipService, private plt: Platform, private settingService: SettingService) {
+    }
+
+    init(){
         this.contact = this.navParams.data;
         this.chatService.loadChatItems();
         this.defaultDID = this.settingService.credential.defaultDID;
@@ -34,8 +37,8 @@ export class MessagePage {
         );
         console.log(this.contact)
     }
-
     ionViewWillEnter(): void {
+        this.init();
         this.scrollToBottom();
     }
 
@@ -80,7 +83,7 @@ export class MessagePage {
                             console.log(data2);
                             originalSMSs.push(data2.sms[0]);
                             this.smss = originalSMSs;
-                            this.chatService.saveSMStoStorage(this.contact, this.smss);
+                            this.chatService.saveSMSstoStorage(this.contact, this.smss);
                             this.scrollToBottom();
                         }
                     },
@@ -110,7 +113,7 @@ export class MessagePage {
                     dividerMsg.date = this.smss[this.smss.length - 1].date;
                     dividerMsg.type = "3";
                     this.smss.push(dividerMsg);
-                    this.chatService.saveSMStoStorage(this.contact, this.smss);
+                    this.chatService.saveSMSstoStorage(this.contact, this.smss);
                     this.scrollToBottom();
                 }
                 refresher.complete();
@@ -156,7 +159,7 @@ export class MessagePage {
                         }
                     }
                     console.log(this.smss);
-                    this.chatService.saveSMStoStorage(this.contact, this.smss);
+                    this.chatService.saveSMSstoStorage(this.contact, this.smss);
                     this.scrollToBottom();
                 }
                 refresher.complete();
